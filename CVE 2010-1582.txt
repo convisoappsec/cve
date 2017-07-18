@@ -1,0 +1,53 @@
+Security Advisory CVE 2010-1582 24/7 Real Media’s Open AdStream v.5.7
+Introduction
+
+1. Copyright and Disclaimer
+The information in this advisory is Copyright 2010 Conviso and provided so that the society can understand the risk they may be facing by running affected software, hardware or other components used on their systems. In case you wish to copy information from this advisory, you must either copy all of it or refer to this document (including our URL). No guarantee is provided for the accuracy of this information, or damage you may cause your systems in testing.
+
+2. About Conviso
+Founded on 2008 by a team of professionals working the IT Security market since 1997, Conviso is a consulting company specialized on network and application security services. Our values are based on the allocation of the adequate competencies on the field, a clear and direct speech with the market, collaboration and partnership with our customers and business partners and constant investments on methodology and research improvement.
+
+This advisory has been discovered as part of a general investigation into the security of software used in the IT environments of our customers. For more information about our company and services provided, please check our website at www.conviso.com.br.
+
+3. The Security Research
+Conviso maintains a virtual team dedicated to explore our customer’s environments in order to identify technical vulnerabilities in software and hardware, developing real-world mitigation solutions and processes to maintain more secure environments. Leaded by Wagner Elias, our CTO, this team is named Conviso Labs and also contribute to important world-class organizations projects and organizations.
+
+The vulnerability described in this security advisory was discovered by Wagner Elias on January 14th 2010 during a malware investigation project.
+
+Security Advisory
+
+1. Issue Description
+This advisory describes a vulnerability in the permission of the directory RealMedia created as default during the installation of Open AdStream, an ad campaign management platform provided by 24/7 Real Media, which exposes directly to the Internet the configuration files, including .sql which contains access credentials.
+
+As a result, a cracker can use this flaw to install a backdoor or take the ownership of the affected component as he/she had access to all configuration files and access credentials.
+
+2. Affected Components
+The vulnerability was identified on the deployment of Open AdStream Version 5.7 in several large Brazilian Internet portals and media delivery websites. The product’s webpage is located at http://www.247realmedia.com/EN-US/us/open-ad-stream.html.
+
+This version of the product can be used only with MySQL 3.23 and Apache 1.36.x, versions which are outdated and vulnerable to several exploits as described on the security advisories posted on the Internet at http://www.securityfocus.com/bid/11357 and http://httpd.apache.org/security/vulnerabilities_13.html.
+
+The vulnerability described in this advisory can easily be found by “script kid” style hackers, making non-targeted attacks, by searching Google using “Google Hacking” techniques.
+
+3. Details
+The deployment process performed by 24/7 Real Media keeps the default configuration on Open AdStream which publishes the configuration files of the host exposed to the Internet on a format such as http://admXX.customername.com.br/RealMedia. As a result the following example files can be fully accessed:
+
+ads	oasis_mysql_insertdb.sqlbcrypt oasis_mysql_insertdb.sql.templateClasses oasis_mysql_insertuser.sqlConvertNotification.ini oasis_mysql_insertuser.sql.templatehash.txt oasis_mysql_testdb.sqlindex.html	oasis_mysql_testdb.sql.templateini oasis_mysql_uninstalldb.sqlinstall.sh oasis_mysql_uninstalldb.sql.templatelibstdc++.so.2.10 oasis_mysql_uninstallOAS.sqllicense.txt oasis_mysql_uninstallOAS.sql.templatelicense.txt.bfe oasis_params.cfgoasis_apache.layout	oasis_path_substitution.shoasis.cfg oasis_ReportFormat.awkoasis_cfg_apache.sh oasis_ReportFormat_mapping.5.1.1oasis_cfg_cron.sh oasis_ReportFormat_mapping.5.1.2oasis_cfg_distrib.sh oasis.shoasis_cfg_mysql.sh	oasis_upgrade_apache.cfgoasis_cfg_ns.sh oasis_upgrade_de.shoasis_copysofiles.sh oasis_upgrade_ns.cfgoasis_errorlog.sh oasis_upgrade_ns.shoasis_example.cfg	oasis_util.shoasis_find_apache.sh oasis_validate_config.shoasis_finish_upgrade.sh oasis_wsusr_apache.cronoasis_install.ini oasis_wsusr_bean.cronoasis_install_oas.sh oasis_wsusr_bean.cron.templateoasis.log oasis_wsusr_nightly.cronoasis_mysql_createdb.sql oasis_wsusr_nightly.cron.templateoasis_mysql_createdb.sql.template
+
+The database server location as well as access credentials of administrative accounts can be found within the files oasis_mysql_insertuser.sql and oasis_params.cfg. With this information, an attacker could gain access to the database and perform any malicious activity. Other files such as oasis_install.ini and install.sh discloses the directory organization of Open AdStream server, which could be useful in combination with another attack.
+
+Other problem we found is related to the old versions of Apache HTTP server and MySQL that must be installed to use the affected software.
+
+Apache Foundation released the final release of version 1.3 of the Apache HTTP Server on February 3rd 2010, stating that no more full releases will be produced, although critical security updates may be made available as described on their mailing lists archives at http://mail-archives.apache.org/mod_mbox/httpd-announce/201002.mbox/%3C20100203000334.GA19021@infiltrator.stdlib.net%3E. They recommend that users update to the current 2.2 version.
+
+4. Issue Mitigation
+The permission of the directory RealMedia should be changed in order to deny access to the configuration files.
+
+5. Additional Information
+The Common Vulnerabilities and Exposures (CVE) project has assigned the name CVE-2010-1582 to this issue. This is a candidate for inclusion in the CVE list (http://cve.mitre.org), which standardizes names for security problems.
+
+6. CVSS Issue Severity Scores
+Conviso calculated the scores of this vulnerability using the online CVSS calculator found at http://www.patchadvisor.com/PatchAdvisor/CVSSCalculator.aspx and described at http://www.first.org/cvss/cvss-guide.pdf.
+
+Base Metrics | Value: 9
+Temporal Metrics | Value: 9
+Environmental Metrics | Value: 7

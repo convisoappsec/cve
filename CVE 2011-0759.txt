@@ -1,0 +1,85 @@
+Security Advisory: Recaptcha Word Press Plugin Cross Site Scripting Vulnerability | CVE 2011-0759
+Introduction
+
+Copyright and Disclaimer
+The information in this advisory is Copyright 2010 Conviso and provided so that the society can understand the risk they may be facing by running affected software, hardware or other components used on their systems. In case you wish to copy information from this advisory, you must either copy all of it or refer to this document (including our URL). No guarantee is provided for the accuracy of this information, or damage you may cause your systems in testing.
+
+About Conviso
+Conviso is a consulting company specialized on application security. Our values are based on the allocation of the adequate competencies on the field, a clear and direct speech with the market, collaboration and partnership with our customers and business partners and constant investments on methodology and research improvement.
+
+This advisory has been discovered as part of a general investigation into the security of software used in the IT environments of our customers. For more information about our company and services provided, please check our website at www.conviso.com.br.
+
+The Security Research
+Conviso maintains a virtual team dedicated to explore our customer’s environments in order to identify technical vulnerabilities in software and hardware, developing real-world mitigation solutions and processes to maintain more secure environments. Leaded by Wagner Elias, our CTO, this team is named Conviso Labs and also contribute to important world-class organizations projects and organizations.
+
+The vulnerability described in this security advisory was discovered by Gabriel Quadros on December 22nd 2010 during a internal security research.
+
+Security Advisory
+
+Issue Description
+The WordPress Recaptcha Plugin integrates reCAPTCHA antispam methods with WordPress including comment, registration, and email spam protection and is available at http://wordpress.org/extend/plugins/wp-recaptcha/.
+
+This advisory describes multiple Stored Cross Site Scripting (XSS) vulnerabilities and one Cross Site Request Forgery (CSRF) vulnerability on the plugin.  As a result, an attacker can gain elevated access privileges to sensitive page content, session cookies, and a variety of other information maintained by the browser on behalf of the WordPress administrator user. Furthermore, the attacker can perform actions administrative privileges.
+
+Affected Components
+This problem was confirmed in the latest version of the plugin – WP-reCAPTCHA 2.9.8.2, other versions maybe also affected.
+
+CVSS Scoring System
+Conviso calculated the scores using the online CVSS calculator found at http://www.patchadvisor.com/PatchAdvisor/CVSSCalculator.aspx and described at http://www.first.org/cvss/cvss-guide.pdf.
+
+The CVSS score is: 6.4
+
+Base Score: 6.7
+Temporal Score: 6.4
+We used the following values to calculate the scores:
+
+Base score is: AV:N/AC:L/Au:N/C:C/I:C/A:N
+Temporal score is: E:F/RL:U/RC:C
+Details
+The plugin’s configuration page is vulnerable to Stored Cross Site Scripting. Several fields are received through POST and included on the response page with inadequate sanitization. The vulnerable code is shown bellow:
+
+749: <input name=”recaptcha_opt_pubkey” id=”recaptcha_opt_pubkey” size=”40″
+
+value=”<?php echo $optionarray_def['pubkey']; ?>” />
+
+753: <input name=”recaptcha_opt_privkey” id=”recaptcha_opt_privkey” size=”40″
+
+value=”<?php echo $optionarray_def['privkey']; ?>” />
+
+782: <input name=”re_tabindex” id=”re_tabindex” size=”5″ value=”<?php echo
+
+$optionarray_def['re_tabindex']; ?>” />
+
+814: <input name=”error_blank” id=”error_blank” size=”80″ value=”<?php
+
+echo $optionarray_
+
+def['error_blank']; ?>” />
+
+818: <input name=”error_incorrect” id=”error_incorrect” size=”80″ value=”<?php
+
+echo $optionarray_def['error_incorrect']; ?>” />
+
+865: <input name=”mailhide_pub” id=”mailhide_pub” size=”40″ value=”<?php echo
+
+$optionarray_def['mailhide_pub']; ?>” />
+
+869: <input name=”mailhide_priv” id=”mailhide_priv” size=”40″ value=”<?php echo
+
+$optionarray_def['mailhide_priv']; ?>” />
+
+888: <input name=”mh_replace_link” id=”mh_replace_link” size=”40″ value=”<?php
+
+echo $optionarray_def['mh_replace_link']; ?>” />
+
+891: <input name=”mh_replace_title” id=”mh_replace_title” size=”40″ value=”<?php
+
+echo $optionarray_def['mh_replace_title']; ?>” />
+
+As a result, an attacker may insert HTML/JavaScript commands to be interpreted in the session of an authenticated administrator and, as the plugin’s configuration page is not protected against Cross Site Request Forgery, the exploitation can be used to inject configuration values and change the reCAPTCHA configuration, disabling CAPTCHA for comments and registration forms. Proof of concept exploitation code is available to interested parties.
+
+Issue Mitigation
+The developer did not provided a patch or workaround. The solution for this issue should add code to sanitize the values before including them using the htmlspecialchars() function or equivalent. Furthermore, a mechanism to protect against the CSRF is needed to prevent an attacker from changing the plugin’s configuration.
+
+Additional Information
+The Common Vulnerabilities and Exposures (CVE) project has assigned the name CVE-2011-0759 to this issue.
